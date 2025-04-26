@@ -2,7 +2,7 @@
     import Navbar from "$lib/components/Navbar.svelte";
     import Poster from "$lib/components/Poster.svelte";
     import { onMount } from "svelte";
-    import { run } from "svelte/legacy";
+    import { getCookie } from "typescript-cookie";
 
     let movies = {
         recentlyAdded: [],
@@ -10,7 +10,11 @@
     };
 
     onMount(async () => {
-        const res = await fetch("/api/media/homepage");
+        const res = await fetch("/api/media/homepage", {
+            headers: {
+                "Authorization": `Bearer ${getCookie("token")}`,
+            },
+        });
         
         if (res.ok) {
             movies = await res.json();

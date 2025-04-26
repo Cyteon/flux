@@ -5,9 +5,7 @@ export async function verifyRequest(request: Request): Promise<any> {
     const authorization = request.headers.get("Authorization");
 
     if (!authorization) {
-        return new Response(JSON.stringify({ error: "Unauthorized" }), {
-            status: 401,
-        });
+        return null;
     }
 
     const token = authorization.split(" ")[1];
