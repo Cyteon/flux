@@ -28,7 +28,10 @@
             }
         }
 
-        if (!state.user && window.location.pathname !== "/login") {
+        if (!state.user && (
+            window.location.pathname !== "/login"
+            && window.location.pathname !== "/setup"
+        )) {
             window.location.href = "/login";
         }
     });

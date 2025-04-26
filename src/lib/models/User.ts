@@ -11,6 +11,10 @@ export const User = sequelize.define(
         },
         username: DataTypes.STRING,
         password: DataTypes.STRING,
+        admin: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+        },
     },
     { tableName: "users", timestamps: false },
 );

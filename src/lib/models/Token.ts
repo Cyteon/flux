@@ -6,6 +6,11 @@ import User from "./User";
 const Token = sequelize.define(
     "Token",
     {
+        id: {
+            type: DataTypes.UUID,
+            primaryKey: true,
+            defaultValue: DataTypes.UUIDV4,
+        },
         token: DataTypes.STRING,
         userId: {
             type: DataTypes.UUID,
