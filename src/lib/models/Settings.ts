@@ -12,7 +12,7 @@ export const Settings = sequelize.define(
         mediaPath: {
             type: DataTypes.STRING,
             allowNull: false,
-        }
+        },
     },
     { tableName: "settings", timestamps: false },
 );
