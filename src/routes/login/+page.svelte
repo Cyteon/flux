@@ -48,6 +48,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Flux | Login</title>
+</svelte:head>
+
 <div class="flex h-screen w-full">
     <div class="m-auto p-4 bg-ctp-mantle rounded-md w-[95%] md:w-1/4">
         <h1 class="text-3xl font-bold mb-2">Login</h1>

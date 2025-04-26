@@ -94,6 +94,10 @@
     }
 </script>
 
+<svelte:head>
+    <title>Flux | Setup</title>
+</svelte:head>
+
 <div class="flex h-screen w-full">
     {#if setupState === "loading"}
         <h1 class="m-auto text-3xl font-bold">Loading setup...</h1>
