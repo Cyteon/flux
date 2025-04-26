@@ -15,7 +15,6 @@ export default {
                 references: {
                     model: {
                         tableName: "users",
-                        schema: "public",
                     },
                     key: "id",
                 },
