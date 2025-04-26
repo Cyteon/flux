@@ -3,29 +3,19 @@ import Token from "$lib/models/Token";
 import bcrypt from "bcrypt";
 
 export async function POST({ request }) {
-    const { identifier, password } = await request.json();
+    const { username, password } = await request.json();
 
-    if (!identifier || !password) {
+    if (!username || !password) {
         return new Response(JSON.stringify({ error: "Invalid credentials" }), {
             status: 400,
         });
     }
 
-    let user;
-
-    if (identifier.includes("@")) {
-        user = await User.findOne({
-            where: {
-                email: identifier,
-            },
-        });
-    } else {
-        user = await User.findOne({
-            where: {
-                username: identifier,
-            },
-        });
-    }
+    const user = await User.findOne({
+        where: {
+            username,
+        },
+    });
 
     if (!user) {
         return new Response(JSON.stringify({ error: "Invalid credentials" }), {

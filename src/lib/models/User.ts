@@ -10,7 +10,6 @@ export const User = sequelize.define(
             defaultValue: DataTypes.UUIDV4,
         },
         username: DataTypes.STRING,
-        email: DataTypes.STRING,
         password: DataTypes.STRING,
     },
     { tableName: "users", timestamps: false },

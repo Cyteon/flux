@@ -3,14 +3,14 @@
     import state from "$lib/state.svelte";
     import { setCookie } from "typescript-cookie";
 
-    let identifier: string = "";
+    let username: string = "";
     let password: string = "";
     let error: string = "";
 
     async function login() {
         error = "";
 
-        if (!identifier || !password) {
+        if (!username || !password) {
             error = "Please fill in all fields.";
             return;
         }
@@ -27,7 +27,7 @@
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    identifier,
+                    username,
                     password,
                 }),
             });
@@ -51,13 +51,13 @@
 <div class="flex h-screen w-full">
     <div class="m-auto p-4 bg-ctp-mantle rounded-md w-[95%] md:w-1/4">
         <h1 class="text-3xl font-bold mb-2">Login</h1>
-        <label class="text-ctp-text text-sm" for="identifier">Email or Username</label>
+        <label class="text-ctp-text text-sm" for="username">Username</label>
         <input
             type="text"
-            id="identifier"
-            bind:value={identifier}
+            id="username"
+            bind:value={username}
             class="w-full p-2 mb-2 bg-ctp-crust rounded-md border border-ctp-surface0 outline-none focus:border-ctp-blue"
-            placeholder="Enter your email or username"
+            placeholder="Enter your username"
         />
 
         <label class="text-ctp-text text-sm" for="password">Password</label>
