@@ -10,8 +10,6 @@
     afterNavigate(async () => {
         const token = getCookie("token");
 
-        console.log(token)
-
         if (token && !state.user) {
             const res = await fetch("/api/user", {
                 method: "GET",
