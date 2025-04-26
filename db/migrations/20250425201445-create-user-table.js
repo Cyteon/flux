@@ -10,7 +10,6 @@ export default {
                 defaultValue: Sequelize.DataTypes.UUIDV4,
             },
             username: Sequelize.DataTypes.STRING,
-            email: Sequelize.DataTypes.STRING,
             password: Sequelize.DataTypes.STRING,
         });
     },
