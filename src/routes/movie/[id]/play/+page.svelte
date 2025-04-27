@@ -1,8 +1,9 @@
 <script lang="ts">
+    import { browser } from "$app/environment";
     import { goto } from "$app/navigation";
-    import { ChevronLeft, Play, Pause, VolumeX, Volume } from "@lucide/svelte";
-    import { onMount } from "svelte";
-    import { run } from "svelte/legacy";
+    import { ChevronLeft, Play, Pause, VolumeX, Volume, Minimize, Maximize, Shrink, Fullscreen } from "@lucide/svelte";
+    import { on } from "stream";
+    import { onMount, onDestroy } from "svelte";
     import { getCookie } from "typescript-cookie";
 
     let { data } = $props();
@@ -12,13 +13,36 @@
     let volume: number = $state(1);
     let currentTime: number = $state(0);
     let duration: number = $state(0);
+    let hideControlsTimeout: ReturnType<typeof setTimeout> | null = $state(null);
+
+    let fullscreen: boolean = $state(false);
     
     function show() {
-        document.getElementById("back-btn")?.classList.remove("hidden");
+        if (browser) {
+            document.getElementById("back-btn")?.classList.remove("hidden");
+            document.getElementById("controls")?.classList.remove("hidden");
+            document.body.style.cursor = "default";
+        }
     }
 
     function hide() {
-        document.getElementById("back-btn")?.classList.add("hidden");
+        if (browser) {
+            document.getElementById("back-btn")?.classList.add("hidden");
+            document.getElementById("controls")?.classList.add("hidden");
+            document.body.style.cursor = "none";
+        }
+    }
+    
+    function handleMouseMove() {
+        show();
+        
+        if (hideControlsTimeout) {
+            clearTimeout(hideControlsTimeout);
+        }
+        
+        hideControlsTimeout = setTimeout(() => {
+            hide();
+        }, 3000);
     }
 
     let movie = $state({});
@@ -53,7 +77,54 @@
             // but it triggers +error.svelte which will show 404
             goto("/404");
         }
-    })
+        
+        if (browser) {
+            window.addEventListener('mousemove', handleMouseMove);
+            
+            show();
+            hideControlsTimeout = setTimeout(() => {
+                hide();
+            }, 3000);
+        }
+    });
+    
+    onDestroy(() => {
+        if (browser) {
+            window.removeEventListener('mousemove', handleMouseMove);
+            
+            if (hideControlsTimeout) {
+                clearTimeout(hideControlsTimeout);
+            }
+        }
+    });
+
+    function toggleFullscreen() {
+        const elem = document.documentElement;
+
+        fullscreen = !fullscreen;
+
+        if (fullscreen) {
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.mozRequestFullScreen) { // Firefox
+                elem.mozRequestFullScreen();
+            } else if (elem.webkitRequestFullscreen) { // Chrome, Safari and Opera
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { // IE/Edge
+                elem.msRequestFullscreen();
+            }
+        } else {
+            if (document.exitFullscreen) {
+                document.exitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+            } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+            } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+            }
+        }
+    }
 </script>
 
 <div class="flex h-screen w-full bg-black">
@@ -75,8 +146,16 @@
                     <Pause class="h-8 w-8" />
                 {/if}
             </button>
+            
+            <button onclick={toggleFullscreen} class="hover:text-ctp-blue ml-2 hidden sm:block">
+                {#if fullscreen}
+                    <Shrink class="h-8 w-8" />
+                {:else}
+                    <Fullscreen class="h-8 w-8" />
+                {/if}
+            </button>
 
-            <div class="flex items-center  w-full justify-center">
+            <div class="flex items-center w-full justify-center">
                 <p class="text-sm text-ctp-subtext0">
                     {new Date(currentTime * 1000).toISOString().substr(11, 8)}
                 </p>
@@ -87,8 +166,8 @@
                 <p class="text-sm text-ctp-subtext0">{new Date(duration * 1000).toISOString().substr(11, 8)}</p>
             </div>
 
-            <!-- so i can move it other place if phone -->
             <div class="flex">
+                <!-- so i can move it other place if phone -->
                 <button onclick={() => {
                     paused = !paused;
                 }} class="hover:text-ctp-blue sm:hidden block">
@@ -96,6 +175,14 @@
                         <Play class="h-8 w-8" />
                     {:else}
                         <Pause class="h-8 w-8" />
+                    {/if}
+                </button>
+
+                <button onclick={toggleFullscreen} class="hover:text-ctp-blue ml-2 sm:hidden block">
+                    {#if fullscreen}
+                        <Shrink class="h-8 w-8" />
+                    {:else}
+                        <Fullscreen class="h-8 w-8" />
                     {/if}
                 </button>
     
@@ -109,6 +196,7 @@
                             <Volume class="h-8 w-8" />
                         {/if}
                     </button>
+
                     <input type="range" min="0" max="1" step="0.01" bind:value={volume} class="w-24 md:w-32 mx-2" />
                 </div> 
             </div>

@@ -1,7 +1,10 @@
 import Token from "./models/Token";
 import User from "./models/User";
 
-export async function verifyRequest(request: Request, cookies: any = null): Promise<any> {
+export async function verifyRequest(
+    request: Request,
+    cookies: any = null,
+): Promise<any> {
     const authorization = request.headers.get("Authorization");
 
     let token: string | null = null;
