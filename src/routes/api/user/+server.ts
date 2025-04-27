@@ -9,7 +9,7 @@ export async function GET({ request }) {
         });
     }
 
-    return new Response(JSON.stringify({ username: user.username }), {
+    return new Response(JSON.stringify({ username: user.username, admin: user.admin }), {
         status: 200,
     });
 }

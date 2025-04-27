@@ -42,9 +42,10 @@ export async function POST({ request }) {
 
     return new Response(
         JSON.stringify({
-            token,
+            token,  
             user: {
                 username: user.username,
+                admin: user.admin,
             },
         }),
     );
