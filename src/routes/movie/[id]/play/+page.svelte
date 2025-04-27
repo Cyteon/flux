@@ -19,7 +19,7 @@
     
     function show() {
         if (browser) {
-            document.getElementById("back-btn")?.classList.remove("hidden");
+            document.getElementById("top-bar")?.classList.remove("hidden");
             document.getElementById("controls")?.classList.remove("hidden");
             document.body.style.cursor = "default";
         }
@@ -27,7 +27,7 @@
 
     function hide() {
         if (browser) {
-            document.getElementById("back-btn")?.classList.add("hidden");
+            document.getElementById("top-bar")?.classList.add("hidden");
             document.getElementById("controls")?.classList.add("hidden");
             document.body.style.cursor = "none";
         }
@@ -203,8 +203,8 @@
         </div>
     </div>
 
-    <div class="absolute top-0 left-0 flex w-full p-2">
-        <a href={`/movie/${data.id}`} id="back-btn" class="p-2 text-white hover:bg-black/40 rounded-full">
+    <div class="absolute top-0 left-0 flex w-full p-2" id="top-bar">
+        <a href={`/movie/${data.id}`} class="p-2 text-white hover:bg-black/40 rounded-full">
             <ChevronLeft class="h-8 w-8" />
         </a>
 
