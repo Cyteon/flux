@@ -25,3 +25,4 @@ vite.config.ts.timestamp-*
 data.db
 
 media/
+!/src/routes/api/media/
